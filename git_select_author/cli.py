@@ -9,6 +9,7 @@ import click
 import questionary
 
 CONTEXT_SETTINGS=dict(ignore_unknown_options=True, allow_extra_args=True, allow_interspersed_args=True)
+NEW_AUTHOR_OPTION = 'Add new author'
 
 class QuestionaryOption(click.Option):
     """
@@ -40,11 +41,25 @@ def git_authors() -> List[str]:
             raise Exception(f'{git_author_file} should should not be empty')
         return [l.strip() for l in lines]
 
+def query_new_author() -> str:
+    name = questionary.text("What's the author's full name").ask()
+    email = questionary.text("What's the author's  e-mail address?").ask()
+    author = f'{name} <{email}>'
+    git_author_file = os.path.expanduser('~/.git_authors')
+    if questionary.confirm(f'Do you want to store {author} to {git_author_file}?').ask():
+        with open(git_author_file, 'a') as f:
+            f.write(author)
+    return author
+
+
 
 
 @click.command(context_settings=CONTEXT_SETTINGS)
-@click.option('--author', prompt=True, type=click.Choice(git_authors()), cls=QuestionaryOption)
+@click.option('--author', prompt=True, type=click.Choice(git_authors() + [NEW_AUTHOR_OPTION]), cls=QuestionaryOption)
 def cli(author):
+    if author == NEW_AUTHOR_OPTION:
+        author = query_new_author()
+        
     args = ['/usr/bin/git'] +  ['commit', '--author', f'"{author}"'] + sys.argv[2:] 
     c = subprocess.run(' '.join(args), shell=True)
     sys.exit(c.returncode)
