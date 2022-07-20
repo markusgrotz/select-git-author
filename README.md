@@ -1,2 +1,4 @@
+# git-select-author
 
-# git-select-author: Selects the author before running git commit
+Interactively select the author before running git commit
+
