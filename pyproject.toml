@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "git-select-author"
+name = "select-git-author"
 version = "0.1.0"
 description = ""
 authors = ["Markus Grotz <markus.grotz@kit.edu>"]
@@ -16,4 +16,4 @@ requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.scripts]
-commit = 'git_select_author.cli:cli'
+commit = 'select_git_author.cli:cli'
