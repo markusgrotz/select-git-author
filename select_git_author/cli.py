@@ -1,14 +1,21 @@
-from typing import List
+"""
+CLI to select interactively the git author
+"""
 
 import os
 import sys
 import subprocess
 
+from typing import List
+
 import click
 import questionary
 from click_prompt import ChoiceOption
 
-CONTEXT_SETTINGS=dict(ignore_unknown_options=True, allow_extra_args=True, allow_interspersed_args=True)
+CONTEXT_SETTINGS = dict(ignore_unknown_options=True,
+                        allow_extra_args=True,
+                        allow_interspersed_args=True)
+
 NEW_AUTHOR_OPTION = 'Add new author'
 
 def git_authors() -> List[str]:
@@ -25,17 +32,20 @@ def git_authors() -> List[str]:
     return []
 
 def query_new_author() -> str:
+    """
+    Prompts the user for a new author entry
+    """
     name = questionary.text("What's the author's full name").ask()
     email = questionary.text("What's the author's e-mail address?").ask()
     author = f'{name} <{email}>'
     git_author_file = os.path.expanduser('~/.git_authors')
     if questionary.confirm(f'Do you want to store {author} to {git_author_file}?').ask():
         with open(git_author_file, 'a') as f:
-            f.write(author)
+            f.write(author + os.linesep)
     return author
 
 @click.command(context_settings=CONTEXT_SETTINGS)
-@click.option('--author', prompt=True, 
+@click.option('--author', prompt=True,
               type=click.Choice(git_authors() + [NEW_AUTHOR_OPTION]),
               cls=ChoiceOption)
 def cli(author):
