@@ -5,9 +5,9 @@ description = ""
 authors = ["Markus Grotz <markus.grotz@kit.edu>"]
 
 [tool.poetry.dependencies]
-python = "^3"
+python = ">=3.6.9,<4.0"
 click = "^8"
-questionary = "^1.10"
+click-prompt = "^0.1"
 
 [tool.poetry.dev-dependencies]
 
