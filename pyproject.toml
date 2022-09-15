@@ -6,8 +6,7 @@ authors = ["Markus Grotz <markus.grotz@kit.edu>"]
 
 [tool.poetry.dependencies]
 python = ">=3.6.9,<4.0"
-click = "^8"
-click-prompt = "^0.1"
+click-prompt = "^0.5.1"
 
 [tool.poetry.dev-dependencies]
 

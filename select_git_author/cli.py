@@ -10,7 +10,7 @@ from typing import List
 
 import click
 import questionary
-from click_prompt import ChoiceOption
+import click_prompt
 
 CONTEXT_SETTINGS = dict(ignore_unknown_options=True,
                         allow_extra_args=True,
@@ -45,10 +45,9 @@ def query_new_author() -> str:
     return author
 
 @click.command(context_settings=CONTEXT_SETTINGS)
-@click.option('--author', prompt=True,
-              type=click.Choice(git_authors() + [NEW_AUTHOR_OPTION]),
-              cls=ChoiceOption)
-def cli(author):
+@click_prompt.choice_option('--author',
+              type=click.Choice(git_authors() + [NEW_AUTHOR_OPTION]))
+def cli(author, set_commitor: bool):
     if author == NEW_AUTHOR_OPTION:
         author = query_new_author()
     args = ['/usr/bin/git'] +  ['commit', '--author', f'"{author}"'] + sys.argv[2:]
