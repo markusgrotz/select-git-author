@@ -77,7 +77,6 @@ def cli(author, set_commitor: bool):
         env['GIT_COMMITTER_EMAIL'] = email
 
 
-    args = ['/usr/bin/git'] +  ['commit', '--author', f'"{author}"'] + sys.argv[2:]
-
-    completed_process = subprocess.run(' '.join(args), shell=True, env=env)
+    args = ['git', 'commit', '--author', f'"{author}"'] + sys.argv[1:]
+    completed_process = subprocess.run(args, env=env)
     sys.exit(completed_process.returncode)
