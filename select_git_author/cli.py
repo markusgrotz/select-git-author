@@ -7,6 +7,7 @@ import sys
 import subprocess
 
 from typing import List
+from typing import Tuple
 
 import click
 import questionary
@@ -17,6 +18,10 @@ CONTEXT_SETTINGS = dict(ignore_unknown_options=True,
                         allow_interspersed_args=True)
 
 NEW_AUTHOR_OPTION = 'Add new author'
+
+
+def main():
+    cli()
 
 def git_authors() -> List[str]:
     """
@@ -44,12 +49,35 @@ def query_new_author() -> str:
             f.write(author + os.linesep)
     return author
 
+
+def parse_name_mail(text: str) -> Tuple[str, str]:
+    name, email = text.rsplit('<', maxsplit=1)
+    email = email.split('>')[0]
+    name = name.strip()
+    return name, email
+
 @click.command(context_settings=CONTEXT_SETTINGS)
 @click_prompt.choice_option('--author',
               type=click.Choice(git_authors() + [NEW_AUTHOR_OPTION]))
+@click.option('--set-commitor/--no-commitor', default=True)
 def cli(author, set_commitor: bool):
+#def cli(author):
     if author == NEW_AUTHOR_OPTION:
         author = query_new_author()
+        
+    name, email = parse_name_mail(author)
+        
+    env = os.environ.copy()
+    
+    env['GIT_AUTHOR_NAME'] = name
+    env['GIT_AUTHOR_EMAIL'] = email
+    
+    if set_commitor:
+        env['GIT_COMMITTER_NAME'] = name
+        env['GIT_COMMITTER_EMAIL'] = email
+
+
     args = ['/usr/bin/git'] +  ['commit', '--author', f'"{author}"'] + sys.argv[2:]
-    completed_process = subprocess.run(' '.join(args), shell=True)
+
+    completed_process = subprocess.run(' '.join(args), shell=True, env=env)
     sys.exit(completed_process.returncode)
