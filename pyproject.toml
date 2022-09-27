@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "select-git-author"
-version = "0.1.0"
+version = "0.2.0"
 description = "Interactively select the author for the next git commit"
 authors = ["Markus Grotz <markus.grotz@kit.edu>"]
 
