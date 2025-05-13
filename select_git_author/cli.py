@@ -28,10 +28,10 @@ def git_authors() -> List[str]:
     """
     git_author_file = os.path.expanduser("~/.git_authors")
     if os.path.isfile(git_author_file):
-        with open(git_author_file, "r") as f:
+        with open(git_author_file, "r", encoding="utf-8") as f:
             lines = f.readlines()
         if not lines:
-            raise ValueError(f"{git_author_file} should should not be empty")
+            raise ValueError(f"{git_author_file} should not be empty")
         return [line.strip() for line in lines]
     return []
 
@@ -49,7 +49,7 @@ def query_new_author() -> str:
     if questionary.confirm(
         f"Do you want to store {author} to {git_author_file}?"
     ).ask():
-        with open(git_author_file, "a") as f:
+        with open(git_author_file, "a", encoding="utf-8") as f:
             f.write(author + os.linesep)
     return author
 
@@ -89,5 +89,5 @@ def cli(author, set_commitor: bool):
         env["GIT_COMMITTER_EMAIL"] = email
 
     args = ["git", "commit", "--author", f'"{author}"'] + sys.argv[1:]
-    completed_process = subprocess.run(args, env=env)
+    completed_process = subprocess.run(args, env=env, check=False)
     sys.exit(completed_process.returncode)
