@@ -2,7 +2,14 @@
 name = "select-git-author"
 version = "0.2.1"
 description = "Interactively select the author for the next git commit"
-authors = ["Markus Grotz <markus.grotz@kit.edu>"]
+authors = ["Markus Grotz <grotz@uw.edu>"]
+license = "MIT"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
 
 [tool.poetry.dependencies]
 python = ">=3.7,<4.0"
