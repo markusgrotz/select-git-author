@@ -33,7 +33,7 @@ def git_authors() -> List[str]:
             lines = f.readlines()
         if not lines:
             raise Exception(f'{git_author_file} should should not be empty')
-        return [l.strip() for l in lines]
+        return [line.strip() for line in lines]
     return []
 
 def query_new_author() -> str:
