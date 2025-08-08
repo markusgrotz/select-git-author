@@ -1,25 +1,31 @@
-[tool.poetry]
+[project]
 name = "select-git-author"
-version = "0.2.2"
+version = "0.2.3"
 description = "Interactively select the author for the next git commit"
-authors = ["Markus Grotz <grotz@uw.edu>"]
-license = "MIT"
+readme = "README.md"
+requires-python = ">=3.7"
+license = {file = "LICENSE.md"}
+keywords = ["cli", "git"]
+authors = [
+  { name = "Markus Grotz", email = "grotz@uw.edu" }
+]
 classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
 ]
 
-
-[tool.poetry.dependencies]
-python = ">=3.7,<4.0"
-click-prompt = "^0.6.2"
-
-[tool.poetry.dev-dependencies]
+dependencies = [
+	"click-prompt>=0.6.2"
+]
 
 [build-system]
-requires = ["poetry-core>=1.0.0"]
-build-backend = "poetry.core.masonry.api"
+requires = ["uv_build>=0.8.4,<0.9.0"]
+build-backend = "uv_build"
 
-[tool.poetry.scripts]
-commit = 'select_git_author.cli:cli'
+[tool.uv.build-backend]
+module-name = "select_git_author"
+module-root = ""
+
+[project.scripts]
+commit = "select_git_author.cli:cli"
